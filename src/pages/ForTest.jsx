@@ -253,21 +253,21 @@ function ForTest() {
     <>
       {infoNumber < 40 && (
         <>
-          <div className="bg-white text-center mb-5 rounded-2xl">
+          <div className="bg-white w-full text-center mb-5 rounded-2xl">
             <h1 className="pt-5 text-xl sm:text-2xl font-bold ">
               Men ma'qul ko'raman
             </h1>
-            <div className="flex  w-64 md:w-[700px] sm:w-[500px] flex-col gap-10  p-10">
+            <div className="flex  w-full flex-col gap-10  p-10">
               <button
                 onClick={nextQuestion}
-                className="btn w-full text-sm sm:text-base h-28 sm:h-20 btn-outline btn-accent"
+                className="btn w-full text-sm sm:text-base h-full btn-outline btn-accent"
                 name={data[infoNumber].number}
               >
                 {data[infoNumber].info}
               </button>
               <button
                 onClick={nextQuestion}
-                className="btn w-full text-sm sm:text-base h-28 sm:h-20 btn-outline btn-accent"
+                className="btn w-full text-sm sm:text-base h-full btn-outline btn-accent"
                 name={data[infoNumber + 1].number}
               >
                 {data[infoNumber + 1].info}
