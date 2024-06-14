@@ -15,7 +15,7 @@ function Home() {
           />
         </div>
         {!startTesting && (
-          <div className="bg-white w-64 md:w-[700px] sm:w-[500px]  rounded-2xl   mb-2 ">
+          <div className="bg-white w-64 md:w-[700px] sm:w-[500px] flex-col  rounded-2xl flex items-center justify-center   mb-2 ">
             <h1 className="font-bold text-2xl sm:text-3xl p-5 w-full text-center">
               Sizning qaysi yo'nalishga moyilligingiz ko'proqligini bilishni
               xohlasangiz, testni yechib ko'ring!

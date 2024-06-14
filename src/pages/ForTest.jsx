@@ -253,7 +253,7 @@ function ForTest() {
     <>
       {infoNumber < 40 && (
         <>
-          <div className="bg-white w-full text-center mb-5 rounded-2xl">
+          <div className="bg-white w-full sm:w-full md:w-[800px]  text-center mb-5 rounded-2xl">
             <h1 className="pt-5 text-xl sm:text-2xl font-bold ">
               Men ma'qul ko'raman
             </h1>
