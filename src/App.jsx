@@ -2,6 +2,7 @@ import MainLayout from "./layout/MainLayout";
 import Home from "./components/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import About from "./pages/About";
+import ChatPage from "./components/Chatbot";
 function App() {
   const routes = createBrowserRouter([
     {
@@ -15,6 +16,10 @@ function App() {
         {
           path: "about",
           element: <About />,
+        },
+        {
+          path: "chatbot",
+          element: <ChatPage />,
         },
       ],
     },
