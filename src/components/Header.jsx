@@ -8,9 +8,14 @@ function Header() {
           <Link className="font-black text-3xl " to={"/"}>
             Home
           </Link>
+          <div className="flex gap-6">
           <Link to={"about"} className="font-bold text-xl">
             About
           </Link>
+          <Link to={"chatPage"} className="font-bold text-xl">
+            AI yordamchi
+          </Link>
+          </div>
         </div>
       </div>
     </div>

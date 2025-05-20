@@ -18,7 +18,7 @@ function App() {
           element: <About />,
         },
         {
-          path: "chatbot",
+          path: "chatpage",
           element: <ChatPage />,
         },
       ],
