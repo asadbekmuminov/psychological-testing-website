@@ -15,6 +15,8 @@ function Header() {
           <Link to={"chatPage"} className="font-bold text-xl">
             AI yordamchi
           </Link>
+          <Link to="/LoginForm">Kirish</Link>
+      <Link to="/RegisterForm">Ro‘yxatdan o‘tish</Link>
           </div>
         </div>
       </div>
