@@ -1,8 +1,36 @@
+
 import ForTest from "../pages/ForTest";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Home() {
   const [startTesting, setStartTesting] = useState(false);
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  // Sahifa yuklanganda va har focusga qaytganda currentUser-ni yangilash
+  useEffect(() => {
+    const updateUser = () => {
+      const user = JSON.parse(localStorage.getItem("currentUser"));
+      setCurrentUser(user);
+    };
+
+    updateUser(); // ilk ochilganda chaqiramiz
+
+    window.addEventListener("focus", updateUser); // sahifaga fokus qaytganda
+
+    return () => {
+      window.removeEventListener("focus", updateUser);
+    };
+  }, []);
+
+  const handleStartTest = () => {
+    if (currentUser) {
+      setStartTesting(true);
+      setShowLoginPrompt(false);
+    } else {
+      setShowLoginPrompt(true);
+    }
+  };
 
   return (
     <>
@@ -14,15 +42,16 @@ function Home() {
             alt="miya va turli hil yo'nalishlar"
           />
         </div>
+
         {!startTesting && (
-          <div className="bg-white w-64 md:w-[700px] sm:w-[500px] flex-col  rounded-2xl flex items-center justify-center   mb-2 ">
+          <div className="bg-white w-64 md:w-[700px] sm:w-[500px] flex-col rounded-2xl flex items-center justify-center mb-2">
             <h1 className="font-bold text-2xl sm:text-3xl p-5 w-full text-center">
               Sizning qaysi yo'nalishga moyilligingiz ko'proqligini bilishni
               xohlasangiz, testni yechib ko'ring!
             </h1>
             <div className="w-full p-5 text-right">
               <button
-                onClick={() => setStartTesting(!startTesting)}
+                onClick={handleStartTest}
                 className="btn btn-outline btn-accent mr-7"
               >
                 Testni boshlash
@@ -30,7 +59,24 @@ function Home() {
             </div>
           </div>
         )}
-        <div>{startTesting && <ForTest />}</div>
+
+        {startTesting && <ForTest />}
+
+        {showLoginPrompt && (
+          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 max-w-sm w-full text-center shadow-lg">
+              <p className="mb-4 text-lg font-semibold">
+                Siz bizda ro'yxatdan o'tmagansiz. Iltimos, ro'yxatdan o'ting! ☺️
+              </p>
+              <button
+                onClick={() => setShowLoginPrompt(false)}
+                className="btn btn-outline btn-accent"
+              >
+                Yopish
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
