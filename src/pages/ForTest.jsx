@@ -1,10 +1,14 @@
-import { useState } from "react";
-import { useEffect } from "react";
+
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { pdf } from '@react-pdf/renderer';
+import Certificate from '../components/Certificate';
+
 function ForTest() {
   const [infoNumber, setInfoNumber] = useState(0);
   const [result, setResult] = useState([]);
   const [mostMatchedGroup, setMostMatchedGroup] = useState("");
-  const data = [
+ const data = [
     {
       info: "Hаyvоnlаrgа qаrаsh (ulаrni bоqish, pаrvа-rish qilish)",
       number: "1a",
@@ -167,7 +171,7 @@ function ForTest() {
     },
   ];
   const oTabiat = [
-    "Оdаm - Tаbiаt (qishlоq хo’jаligi, аgrоnоm, biоlоg, vеtеrеnаr, zооlоg, gеоlоg, хimik vа shu kаbilаr).",
+    "Odam-Tabiat(qishloq xo'jaligi, agronom, biolog, veterenar, zoolog, geolog, ximik va shu kabilar).Siz — tabiat bilan chambarchas bog'liq insonsiz. Tashqi muhitni, tirik organizmlarni yoki yer qatlamlarini o'rganish sizga zavq bag'ishlaydi. Siz uchun eng to'g'ri yo'l — o'zingizni tabiat sirlari, hayvonot va o'simliklar dunyosi, yoki yer resurslari bilan bog'liq sohalarda rivojlantirishdir. Agronomiya, biologiya, veterinaariya yoki ekologiya — bular sizning qiziqishlaringizni nafaqat mustahkamlaydi, balki jamiyatga foydali bo'lish yo'lida kuchli poydevor bo'lib xizmat qiladi. Sizda tabiatni asrash, uni chuqur tushunish va insoniyat uchun foyda keltirish salohiyati bor.☺️",
     "1a",
     "3v",
     "6a",
@@ -178,7 +182,7 @@ function ForTest() {
     "20a",
   ];
   const oTexnika = [
-    "Оdаm - Tехnikа (tехnik - tехnоlоg, quruvchi, elеktrik, mехаnik, mаshinаsоz, tехnik vа shu kаbilаr).",
+    "Odam - Texnika (texnik - texnolog, quruvchi, elektrik, mexanik, mashinasoz, texnik va shu kabilar).Siz — texnik tafakkurga ega, tizimlarni tahlil qilish, qurish va yaxshilashga moyil odamsiz. Qurilish, mexanika, elektr tizimlari yoki sanoat uskunalari bilan ishlash sizga qoniqish bag'ishlaydi. Ushbu yo'nalishda sizning kuchli tomonlaringiz — muammoga texnik yondashuv, sabr-toqat va aniqlikdir. Sizni harakatga keltiradigan narsa — real natijani ko'rish va uni o'zingiz yaratganingizni bilish. Texnologiya tez rivojlanayotgan davrda siz kabi amaliy bilimga ega insonlar har qachongidan ham zarur!☺️",
     "1v",
     "4a",
     "7v",
@@ -189,7 +193,7 @@ function ForTest() {
     "19a",
   ];
   const oOdam = [
-    "Оdаm - оdаm (o’qituvchi, tаrbiyachi, хаmshirа, vrаch, jurnаlist, хuquqshunоs, kutubхоnаchi, sаvdо хоdimi vа shu kаbilаr).",
+    "Odam - odam (o'qituvchi, tarbiyachi, xamshira, vrach, jurnalist, xuquqshunos, kutubxonachi, savdo xodimi va shu kabilar).Siz — boshqalarning his-tuyg'ulariga e'tiborli, muloqotda ochiq va yordam berishga tayyor shaxssiz. Tibbiyot, pedagogika, jurnalistika yoki huquqshunoslik sohalari siz uchun nafaqat kasb, balki hayot tarzi bo'lishi mumkin. Siz boshqalarning hayotini yaxshilash, bilim ulashish va ularni eshitish orqali jamiyatda muhim o'rin egallaysiz. Sizning kuchingiz — insonlar bilan aloqa o'rnatish va ularga kuchli ijobiy ta'sir ko'rsatish qobiliyatidadir. Shuning uchun bu yo'nalishda siz chinakam muvaffaqiyatlarga erishishingiz mumkin!☺️",
     "2a",
     "4v",
     "6v",
@@ -200,7 +204,7 @@ function ForTest() {
     "18a",
   ];
   const oBelgi = [
-    "Оdаm - bеlgilаr tizimi (iqtisоdchi, хisоbchi, rеjаlоvsi, tехnik - dаsturchi, оpеrаtоr, muхаrrir, mаtеmаtik vа shu kаbilаr).",
+    "Odam - belgilar tizimi (iqtisodchi, xisobchi, rejalovsi, texnik - dasturchi, operator, muxarrir, matematik va shu kabilar).Siz — aniqlik, mantiq va tartibni qadrlovchi insonsiz. Hisob-kitob, dasturlash, rejalashtirish yoki tahliliy fikrlash talab etiladigan kasblar siz uchun ayni muddao. Siz murakkab axborotlar orasida mantiqiy bog'liqlikni topa olasiz, bu esa sizni iqtisod, texnik dasturlash yoki statistik tahlil kabi sohalarda muvaffaqiyatga yetaklaydi. Sizning aql-zakovingiz va diqqat markazingiz — murakkab tizimlarni boshqarishga, to'g'ri qarorlar chiqarishga asos bo'ladi.☺️",
     "2v",
     "5a",
     "9v",
@@ -211,7 +215,7 @@ function ForTest() {
     "20v",
   ];
   const oBadiiy = [
-    "Оdаm - bаdiiy оbrаz (bеzаkchi-pаrdоzchi, musiqаchi, srtist, rаssоm, rеjisyor, tаnqidchi vа shu kаbilаr).",
+    "Odam - badiiy obraz (bezakchi-pardozchi, musiqachi, srtist, rassom, rejisyor, tanqidchi va shu kabilar).  Siz — ijodkorlik va estetik did bilan yashaydigan insonsiz. San'at, musiqa, dizayn yoki adabiyot orqali o'zingizni ifoda etishni yoqtirasiz. Siz uchun kasb — bu o'zingizni topish va boshqalarni ilhomlantirish vositasi. Har bir asaringiz, ishingiz yoki chiqishingiz orqali insonlar qalbiga yetib borasiz. Shuning uchun sizga badiiy obrazlar, sahna, moda, kinomatografiya yoki san'atshunoslik sohalari ayni mos keladi. Sizning kuchingiz — o'zgalarni his qilishga undaydigan go'zallikni yaratishda.☺️",
     "3a",
     "5v",
     "7a",
@@ -240,31 +244,67 @@ function ForTest() {
 
   function nextQuestion(event) {
     const btnName = event.target.name;
+    
+    if (infoNumber + 2 < data.length) {
+      setInfoNumber((prevInfoNumber) => prevInfoNumber + 2);
+    } else {
+      setInfoNumber(data.length);
+    }
 
-    setInfoNumber((prevInfoNumber) => prevInfoNumber + 2);
     setResult((prevResult) => [...prevResult, btnName]);
   }
+
+  // LocalStorage dan foydalanuvchi ismini olish
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const fullName = currentUser?.fullName || "Foydalanuvchi";
+
   const mostMatchedGroupIndex = categories.findIndex(
     (category) => category[0] === mostMatchedGroup
   );
   const zeroIndexedGroup =
-    mostMatchedGroupIndex !== -1 ? categories[mostMatchedGroupIndex][0] : "";
+    mostMatchedGroupIndex !== -1 ? categories[mostMatchedGroupIndex][0] : "Natija topilmadi";
+
+  const [loading, setLoading] = useState(false);
+
+  const handleDownload = async () => {
+    setLoading(true);
+
+    try {
+      const blob = await pdf(
+        <Certificate fullName={fullName} resultGroup={zeroIndexedGroup} />
+      ).toBlob();
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Sertifikat-${fullName}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("PDF yaratishda xatolik yuz berdi:", error);
+    }
+
+    setLoading(false);
+  };
+
   return (
     <>
-      {infoNumber < 40 && (
-        <>
-          <div className="bg-white w-full sm:w-full md:w-[800px]  text-center mb-5 rounded-2xl">
-            <h1 className="pt-5 text-xl sm:text-2xl font-bold ">
-              Men ma'qul ko'raman
-            </h1>
-            <div className="flex  w-full flex-col gap-10  p-10">
-              <button
-                onClick={nextQuestion}
-                className="btn w-full text-sm sm:text-base h-full btn-outline btn-accent"
-                name={data[infoNumber].number}
-              >
-                {data[infoNumber].info}
-              </button>
+      {infoNumber < data.length && (
+        <div className="bg-white w-full sm:w-full md:w-[800px]  text-center mb-5 rounded-2xl">
+          <h1 className="pt-5 text-xl sm:text-2xl font-bold ">
+            Men ma'qul ko'raman
+          </h1>
+          <div className="flex  w-full flex-col gap-10  p-10">
+            <button
+              onClick={nextQuestion}
+              className="btn w-full text-sm sm:text-base h-full btn-outline btn-accent"
+              name={data[infoNumber].number}
+            >
+              {data[infoNumber].info}
+            </button>
+            {infoNumber + 1 < data.length && (
               <button
                 onClick={nextQuestion}
                 className="btn w-full text-sm sm:text-base h-full btn-outline btn-accent"
@@ -272,18 +312,32 @@ function ForTest() {
               >
                 {data[infoNumber + 1].info}
               </button>
-            </div>
+            )}
           </div>
-        </>
+        </div>
       )}
-      {infoNumber > 38 && (
+
+      {infoNumber >= data.length && (
         <div className="bg-white text-center mb-5 rounded-2xl">
           <h1 className="pt-5 text-xl sm:text-2xl font-bold mb-8">
             Sizning test natijangiz:
           </h1>
-          <h1 className="mb-20 pb-20 text-center px-5 font-bold text-lg">
+          <h1 className="pb-20 text-center px-5 font-bold text-lg">
             {zeroIndexedGroup}
           </h1>
+          <div className="flex  justify-around pb-10">
+            <Link to="/" className="btn btn-accent">
+              Home
+            </Link>
+
+            <button
+              onClick={handleDownload}
+              disabled={loading}
+              className="btn btn-accent"
+            >
+              {loading ? "Yuklanmoqda..." : "Sertifikatni yuklab olish"}
+            </button>
+          </div>
         </div>
       )}
     </>
@@ -291,3 +345,4 @@ function ForTest() {
 }
 
 export default ForTest;
+

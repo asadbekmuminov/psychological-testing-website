@@ -26,7 +26,7 @@ function Header() {
           {/* Kirish, ro'yxatdan o'tish yoki user ismi va Logout */}
           {currentUser ? (
             <>
-              <span className="font-semibold hidden md:block">{currentUser.fullName}</span>
+              <span className="font-semibold hidden md:block">Salom, {currentUser.fullName} ☺️</span>
               <LogoutButton />
             </>
           ) : (
@@ -110,7 +110,7 @@ function Header() {
                   className="block w-full text-left px-4 py-2 hover:bg-gray-100 font-semibold"
                   onClick={handleLogout}
                 >
-                  Logout
+                  Chiqish
                 </button>
               )}
             </div>

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+// Muvaffaqiyat modal
 const SuccessModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
@@ -9,10 +10,30 @@ const SuccessModal = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-xl shadow-xl max-w-sm w-full text-center space-y-4">
         <h2 className="text-2xl font-bold text-green-600">✔ Ro‘yxatdan o‘tish muvaffaqiyatli yakunlandi!</h2>
-        <p className="text-gray-600">Endi tizimga kirishingiz mumkin.</p>
+        <p className="text-gray-600">Endi testni ishlashingiz mumkin.</p>
         <button
           onClick={onClose}
           className="btn btn-outline btn-accent"
+        >
+          Yopish
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Xato modal (parol uchun)
+const ErrorModal = ({ isOpen, onClose, message }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-xl shadow-xl max-w-sm w-full text-center space-y-4">
+        <h2 className="text-2xl font-bold text-red-600">❌ Xatolik</h2>
+        <p className="text-gray-600">{message}</p>
+        <button
+          onClick={onClose}
+          className="btn btn-outline btn-danger"
         >
           Yopish
         </button>
@@ -28,7 +49,9 @@ const RegisterForm = () => {
     password: ''
   });
 
-  const [showModal, setShowModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -36,17 +59,32 @@ const RegisterForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'age') {
-      if (!/^\d*$/.test(value)) return; // faqat raqamlar
+      if (!/^\d*$/.test(value)) return; // faqat raqamlar qabul qilinadi
     }
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleRegister = (e) => {
     e.preventDefault();
+
+    // Parol tekshiruvi
+    const password = formData.password;
+    if (password.length < 8) {
+      setErrorMessage('Parol kamida 8 ta belgidan iborat bo‘lishi va bo`sh joydan foydalanmaslik kerak!');
+      setShowErrorModal(true);
+      return;
+    }
+    if (/\s/.test(password)) {
+      setErrorMessage('Parolda bo‘sh joy bo‘lishi mumkin emas.');
+      setShowErrorModal(true);
+      return;
+    }
+
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const existingUser = users.find(user => user.fullName === formData.fullName);
     if (existingUser) {
-      alert('Bu foydalanuvchi allaqachon ro‘yxatdan o‘tgan.');
+      setErrorMessage('Bu foydalanuvchi allaqachon ro‘yxatdan o‘tgan.');
+      setShowErrorModal(true);
       return;
     }
     users.push(formData);
@@ -55,19 +93,23 @@ const RegisterForm = () => {
     // Avtomatik login
     localStorage.setItem('currentUser', JSON.stringify(formData));
 
-    setShowModal(true);
+    setShowSuccessModal(true);
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
-    navigate('/'); // Home sahifaga o'tish
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false);
+    navigate('/');
     setTimeout(() => {
-      window.location.reload(); // sahifani yangilash
+      window.location.reload();
     }, 100);
   };
 
+  const handleCloseErrorModal = () => {
+    setShowErrorModal(false);
+  };
+
   return (
-    <div className="min-h-screen  flex items-center justify-center  px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <form
         onSubmit={handleRegister}
         className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl space-y-6"
@@ -143,7 +185,8 @@ const RegisterForm = () => {
         </p>
       </form>
 
-      <SuccessModal isOpen={showModal} onClose={handleCloseModal} />
+      <SuccessModal isOpen={showSuccessModal} onClose={handleCloseSuccessModal} />
+      <ErrorModal isOpen={showErrorModal} onClose={handleCloseErrorModal} message={errorMessage} />
     </div>
   );
 };

@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Modal komponenti
+// Muvaffaqiyatli kirish uchun modal
 const SuccessModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
@@ -22,13 +21,35 @@ const SuccessModal = ({ isOpen, onClose }) => {
   );
 };
 
+// Xato bildirishnomasi uchun modal
+const ErrorModal = ({ isOpen, onClose, message }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-xl shadow-xl max-w-sm w-full text-center space-y-4">
+        <h2 className="text-2xl font-bold text-red-600">❌ Xatolik yuz berdi!</h2>
+        <p className="text-gray-600">{message}</p>
+        <button
+          onClick={onClose}
+          className="btn btn-outline btn-danger"
+        >
+          Yopish
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const LoginForm = () => {
   const [credentials, setCredentials] = useState({
     fullName: '',
     password: ''
   });
 
-  const [showModal, setShowModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -43,19 +64,23 @@ const LoginForm = () => {
     );
     if (user) {
       localStorage.setItem('currentUser', JSON.stringify(user));
-      setShowModal(true); // Modalni ko‘rsatamiz
+      setShowSuccessModal(true);
     } else {
-      alert('Ism yoki parol noto‘g‘ri.');
+      setErrorMessage('Ism yoki parol noto‘g‘ri.');
+      setShowErrorModal(true);
     }
   };
 
-  // ✅ Bu yerda home sahifaga o'tib, uni to‘liq yangilaymiz
-  const handleCloseModal = () => {
-    setShowModal(false);
-    navigate('/'); // Home sahifaga yo‘naltiramiz
+  const handleCloseSuccessModal = () => {
+    setShowSuccessModal(false);
+    navigate('/');
     setTimeout(() => {
-      window.location.reload(); // Sahifani to‘liq yangilaymiz
+      window.location.reload();
     }, 100);
+  };
+
+  const handleCloseErrorModal = () => {
+    setShowErrorModal(false);
   };
 
   return (
@@ -102,8 +127,9 @@ const LoginForm = () => {
         </p>
       </form>
 
-      {/* Modal oynasi */}
-      <SuccessModal isOpen={showModal} onClose={handleCloseModal} />
+      {/* Modal oynalari */}
+      <SuccessModal isOpen={showSuccessModal} onClose={handleCloseSuccessModal} />
+      <ErrorModal isOpen={showErrorModal} onClose={handleCloseErrorModal} message={errorMessage} />
     </div>
   );
 };
