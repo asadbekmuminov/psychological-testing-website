@@ -18,7 +18,7 @@ function Header() {
       <div className="container mx-auto flex justify-between items-center px-4 py-4">
         {/* Logo */}
         <Link to="/" className="text-3xl font-black btn btn-ghost normal-case">
-          Home
+          JobTest
         </Link>
 
         {/* Menyu va hamburger tugma */}
