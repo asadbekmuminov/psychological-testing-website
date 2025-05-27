@@ -327,7 +327,7 @@ function ForTest() {
           </h1>
           <div className="flex  justify-around pb-10">
             <Link to="/" className="btn btn-accent">
-              Home
+              Asosiy sahifa
             </Link>
 
             <button
