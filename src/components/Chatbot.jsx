@@ -1,4 +1,4 @@
-
+import { Link } from "react-router-dom";
 import { useState } from "react";
 
 export default function ChatPage() {
@@ -94,6 +94,10 @@ export default function ChatPage() {
           Yuborish
         </button>
       </div>
+      <Link to="/" className="btn btn-accent btn-sm w-fit mt-4 self-end">
+                    Asosiy sahifa
+                  </Link>
     </div>
+    
   );
 }
